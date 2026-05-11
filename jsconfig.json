@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@private/*": ["./builder-core/*", "./src/mocks/*"]
+    }
+  }
+}
