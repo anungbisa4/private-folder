@@ -1,37 +1,46 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import Test from '../builder-core/text'
+import { Suspense, useState } from "react";
+import reactLogo from "./assets/react.svg";
+import viteLogo from "/vite.svg";
+import "./App.css";
+import { lazy } from "react";
+
+const PrivateComponent = lazy(
+	() =>
+		import("../builder-core/text")
+			.then((module) => ({ default: module.default }))
+			.catch(() => ({ default: () => <div>Private...</div> })), // Jika error/kosong, pakai Default
+);
 
 function App() {
-  const [count, setCount] = useState(0)
+	const [count, setCount] = useState(0);
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank" rel="noreferrer">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank" rel="noreferrer">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button type="button" onClick={() => setCount((c) => c + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-      <Test />
-    </>
-  )
+	return (
+		<>
+			<div>
+				<a href='https://vite.dev' target='_blank' rel='noreferrer'>
+					<img src={viteLogo} className='logo' alt='Vite logo' />
+				</a>
+				<a href='https://react.dev' target='_blank' rel='noreferrer'>
+					<img src={reactLogo} className='logo react' alt='React logo' />
+				</a>
+			</div>
+			<h1>Vite + React</h1>
+			<div className='card'>
+				<button type='button' onClick={() => setCount((c) => c + 1)}>
+					count is {count}
+				</button>
+				<p>
+					Edit <code>src/App.jsx</code> and save to test HMR
+				</p>
+			</div>
+			<p className='read-the-docs'>
+				Click on the Vite and React logos to learn more
+			</p>
+			<Suspense fallback={<div>Private...</div>}>
+				<PrivateComponent />
+			</Suspense>
+		</>
+	);
 }
 
-export default App
+export default App;
